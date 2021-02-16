@@ -1,0 +1,164 @@
+<html>
+<head>
+    <title>Albert's Just-In-Time Donuts</title>
+    <!--The title of the Albert's Donuts web page-->
+    <H1>Albert's Just in time Donuts</H1>
+    <!--The header of the web page-->
+    <H2>All donuts 50 cents each, cake or glazed!</H2>
+    <!--The subheader of the web page-->
+    <img src="Albert-Donuts.jpg">
+    <!--The logo of the Albert's Donuts-->
+
+    <script type = "text/javascript">
+        //Anything after this is a scripting language as javascript
+        function updateOrder() {
+            //start execution updateOrder function
+            const TAXRATE=0.15;
+            //declare tax rate
+            const DONUTPRICE=0.50;
+            //declare donut price
+
+            var numCakedDonuts=parseDonuts(document.getElementById("cakedonuts").value);
+            //variable declaration get a ID attribute from cakedonuts
+            var numGlazedDonuts=parseDonuts(document.getElementById("glazeddonuts").value);
+            //variable declaration get a ID attribute from glazeddonuts
+            var SubTotal=(numCakedDonuts+numGlazedDonuts)*DONUTPRICE;
+            //calculate sbutotal and variable declaration
+            var Tax=SubTotal*TAXRATE;
+            //calculate tax and variable declaration
+            var Total=SubTotal+Tax;
+            //calculate total and variable declaration
+
+            document.getElementById("subtotal").value="$"+SubTotal.toFixed(2);
+            //convert subtotal into a string and keeping only two decimals
+            document.getElementById("tax").value="$"+Tax.toFixed(2);
+            //convert tax into a string and keeping only two decimals
+            document.getElementById("total").value="$"+Total.toFixed(2);
+            //convert total into a string and keeping only two decimals
+        }
+
+        function parseDonuts(DonutString){
+            //start execution parsedonuts function
+            DonutString = DonutString.toLowerCase()
+            //converts donutstring to lowercase letters
+            var numDonuts=parseInt(DonutString);
+            //parses donutstring and returns a integers and variable declaration
+                if (DonutString.indexOf("dozen")!=-1){
+                    //check appearance of dozen and if the value to search for never occurs this method return -1
+                    numDonuts =numDonuts * 12;
+                    //if the value to search have dozen numdonuts*12
+                }
+                if (DonutString == "dozen"){
+                    //if input dozen
+                    numDonuts = 1 * 12;
+                    //if only input dozen numdonuts 1*12
+                }
+                if (isNaN(numDonuts)){
+                    //check the value is or not a number
+                    numDonuts = 0;
+                    //if true numdonuts = 0
+                }
+            return numDonuts;
+            //stop execution of this function and return this value to the function caller
+
+        }
+        function placeOrder(form)
+        //start execution placeorder function
+        {
+            var customerName = document.getElementById("name").value;
+            //variable declaration get a ID attribute from name
+            var pickupTime = document.getElementById("pickupminutes").value;
+            //variable declaration get a ID attribute from pickupminutes
+            var disSubtotal = document.getElementById("subtotal").value;
+            //variable declaration get a ID attribute from subtotal
+            var disTax = document.getElementById("tax").value;
+            //variable declaration get a ID attribute from tax
+            var disTotal = document.getElementById("total").value;
+            //variable declaration get a ID attribute from total
+            var newLine = "\r\n"
+            //variable declaration to get nuw line
+            var disalert = "Thank you " +customerName
+            //variable declaration display alert 1st line
+            disalert += newLine;
+            //variable declaration to get nuw line
+            disalert += "Your order will be processed";
+            //variable declaration display alert 2nd line
+            disalert += newLine;
+            //variable declaration to get nuw line
+            disalert += "Pick up after " + pickupTime + " minutes";
+            //variable declaration display alert 3rd line
+            disalert += newLine;
+            //variable declaration to get nuw line
+            disalert += "Subtotal: " + disSubtotal;
+            //variable declaration display alert 4th line
+            disalert += newLine;
+            //variable declaration to get nuw line
+            disalert += "Tax: " + disTax;
+            //variable declaration display alert 5th line
+            disalert += newLine;
+            //variable declaration to get nuw line
+            disalert += "Total: " + disTotal;
+            //variable declaration display alert 6th line
+
+            if (isNaN(customerName) == 0) {
+                //check name value is not number and empty
+                document.getElementById("name").value = prompt("Your name can only be displayed in letters");
+                //if true, alert this information letters only
+            }
+            else if  ((disSubtotal== "$0.00")||(disSubtotal=="")) {
+                //check dissubtoal is $0.00 or empty
+                alert("Please input your order")
+                //if true, alert please input order
+            }
+            else if ((isNaN(pickupTime) == 1) || (pickupTime < 10)) {
+                //next check pickuptime is not number and empty and the value < 10
+                document.getElementById("pickupminutes").value = prompt("Please wait for ten minutes or more");
+                //if true, alert this information input the value more then 10
+            }
+                else {
+                alert(disalert)
+            }//display variable disalert, that content customer name, pickup time, subtotal ,tax and total
+        }
+    </script>
+    <!--The end of a scripting language as javascript-->
+
+</head>
+
+
+<body>
+<div id="frame">
+
+    <form name="orderform" action="donuts.php" method="POST">
+        <div class="field">
+            Name: <input type="text" id="name" name="name" value="" />
+        </div>
+        <div class="field">
+            # of cake donuts: <input type="text" id="cakedonuts" name="cakedonuts" value=""
+                                     onchange="updateOrder();" />
+        </div>
+        <div class="field">
+            # of glazed donuts: <input type="text" id="glazeddonuts" name="glazeddonuts" value=""
+                                       onchange="updateOrder();" />
+        </div>
+        <div class="field">
+            Minutes 'til pickup: <input type="text" id="pickupminutes" name="pickupminutes" value="" />
+        </div>
+        <div class="field">
+            Subtotal: <input type="text" id="subtotal" name="subtotal" value="" readonly="readonly" />
+        </div>
+        <div class="field">
+            Tax: <input type="text" id="tax" name="tax" value="" readonly="readonly" />
+        </div>
+        <div class="field">
+            Total: <input type="text" id="total" name="total" value="" readonly="readonly" />
+        </div>
+        <div class="field">
+            <input type="button" value="Place Order" onclick="placeOrder(this.form);" />
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
+
+<!--Student ID: 2173138 Student name: Qiang Zhang-->
